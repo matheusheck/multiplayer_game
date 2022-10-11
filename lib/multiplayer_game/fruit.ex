@@ -3,10 +3,10 @@ defmodule MultiplayerGame.Fruit do
   defstruct x: nil, y: nil, id: nil
 
   @type t() :: %__MODULE__{
-    x: integer(),
-    y: integer(),
-    id: String.t()
-  }
+          x: integer(),
+          y: integer(),
+          id: String.t()
+        }
 
   @doc """
   Iniciate the state with Game struct

@@ -5,7 +5,8 @@ defmodule MultiplayerGameWeb.PageController do
 
   def index(conn, _params) do
     render(conn, "index.html",
-      user_token: Phoenix.Token.sign(MultiplayerGameWeb.Endpoint, @salt, MultiplayerGame.Names.generate())
+      user_token:
+        Phoenix.Token.sign(MultiplayerGameWeb.Endpoint, @salt, MultiplayerGame.Names.generate())
     )
   end
 end

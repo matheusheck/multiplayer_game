@@ -1,6 +1,7 @@
 defmodule MultiplayerGame.Names do
   def generate do
     title = ~w(Sir Sr Prof Saint Ibn Lady Madam Mistress Herr Dr) |> Enum.random()
+
     name =
       [
         ~w(B C D F G H J K L M N P Q R S T V W X Z),

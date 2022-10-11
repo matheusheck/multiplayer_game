@@ -1,6 +1,6 @@
 defmodule MultiplayerGame.Game do
   @derive Jason.Encoder
-  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player: nil
+  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player_id: nil, pid: nil
 
   use Agent
 
@@ -18,8 +18,16 @@ defmodule MultiplayerGame.Game do
   def state do
     Agent.get(__MODULE__, & &1)
   end
+  
+  def reset do
+    Agent.
+  end
 
-  def add_player(%{id: id} = player) do
+  def maybe_add_player(%{id: id} = player), do:
+    add_player(Map.has_key?(state(), id), player)
+
+  def add_player(true, _), do: state()
+  def add_player(_, %{id: id} = player) do
     Agent.update(__MODULE__, fn state ->
       new_players = Map.put(state.players, id, player)
       %{state | players: new_players}
@@ -35,11 +43,10 @@ defmodule MultiplayerGame.Game do
 
   def add_fruit() do
     Agent.update(__MODULE__, fn state ->
-      new_fruits = Map.put(state.fruits, %Fruit{})
+      new_fruits = Map.put(state, :fruits, %Fruit{})
       %{state | fruits: new_fruits}
     end)
   end
-
 
   def remove_fruit(fruit_id) do
     Agent.update(__MODULE__, fn state ->
@@ -48,21 +55,72 @@ defmodule MultiplayerGame.Game do
     end)
   end
 
-  def move_player(command) do
-    maybe_move_player(command)
+  def move_player(%{"keyPressed" => "ArrowDown", "playerId" => player_id}) do
+    state = state()
+
+    state
+    |> get_player(player_id)
+    |> maybe_move_player_down(state)
   end
 
-  def maybe_move_player(%{"keyPressed" => "ArrowDown", "playerId" => player_id}) do
-    players_state = state()
+  def move_player(%{"keyPressed" => "ArrowUp", "playerId" => player_id}) do
+    state = state()
+
+    state
+    |> get_player(player_id)
+    |> maybe_move_player_up(state)
+  end
+
+  def move_player(%{"keyPressed" => "ArrowLeft", "playerId" => player_id}) do
+    state = state()
+
+    state
+    |> get_player(player_id)
+    |> maybe_move_player_left(state)
+  end
+
+  def move_player(%{"keyPressed" => "ArrowRight", "playerId" => player_id}) do
+    state = state()
+
+    state
+    |> get_player(player_id)
+    |> maybe_move_player_right(state)
+  end
+
+  defp get_player(state, player_id) do
+    state
+    |> Map.get(:players)
+    |> Map.get(player_id)
+  end
+
+  defp maybe_move_player_down(%{y: y} = player, state) when y < 9, do:
+    update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
+  defp maybe_move_player_down(_player, state), do: state
+
+  defp maybe_move_player_up(%{y: y} = player, state) when y > 0, do:
+    update_player_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
+  defp maybe_move_player_up(_player, state), do: state
+
+  defp maybe_move_player_left(%{x: x} = player, state) when x > 0, do:
+  update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
+  defp maybe_move_player_left(_player, state), do: state
+
+  defp maybe_move_player_right(%{x: x} = player, state) when x < 9, do:
+    update_player_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
+  defp maybe_move_player_right(_player, state), do: state
+
+  defp update_player_on_state(player, state) do
+    other_players = Map.delete(state.players, player.id)
+    new_players = Map.put(other_players, player.id, player)
 
     Agent.update(__MODULE__, fn state ->
-      %{players: players} = state
-      this_player = players[player_id]
-      other_players = Map.delete(state.fruits, player_id)
-      new_this_player = %{}
-      new_players = Map.put(other_players, new_this_player)
-
       %{state | players: new_players}
+    end)
+  end
+
+  defp update_current_player_id_on_state(current_player_id, state) do
+    Agent.update(__MODULE__, fn state ->
+      %{state | current_player_id: current_player_id}
     end)
   end
 end

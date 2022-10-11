@@ -3,16 +3,15 @@ defmodule MultiplayerGameWeb.GameLive do
 
   alias MultiplayerGame.Game
 
-
   # def struct do game
   @type game :: %{
-      players: Map.t(),
-      fruits: Map.t(),
-      screen: %{
-          width: 10,
-          height: 10
-      }
-  }
+          players: Map.t(),
+          fruits: Map.t(),
+          screen: %{
+            width: 10,
+            height: 10
+          }
+        }
 
   def render(assigns) do
     ~H"""
@@ -22,28 +21,29 @@ defmodule MultiplayerGameWeb.GameLive do
     """
   end
 
-  def mount(_params, _session, socket) do
-    player = MultiplayerGame.Player.create()
-    Game.add_player(player)
+  def mount(_params, %{"id" => id, "unique_name" => unique_name}, socket) do
+    player = MultiplayerGame.Player.create(id, unique_name)
+    Game.maybe_add_player(player)
 
     socket =
       socket
       |> assign(:player, player)
       |> assign(:state, Game.state())
-    Process.send_after(self(), :render_game, 16)
+      |> assign(:unique_name, unique_name)
+
+    Process.send_after(self(), :render_game, 1)
     {:ok, socket}
   end
 
-
   def handle_info(:render_game, %{assigns: %{player: %{id: id}} = _assigns} = socket) do
-    state = Map.put(Game.state, :current_player, id)
+    state = Map.put(Game.state(), :current_player, id)
 
-    Process.send_after(self(), :render_game, 16)
+    Process.send_after(self(), :render_game, 1)
     {:noreply, push_event(socket, "game", state)}
   end
 
   def handle_event("key_down", payload, socket) do
-    IO.inspect(payload, label: "........:::::: ......")
+    MultiplayerGame.Game.move_player(payload)
 
     {:noreply, socket}
   end

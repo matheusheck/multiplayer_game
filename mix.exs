@@ -33,7 +33,7 @@ defmodule MultiplayerGame.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:elixir_uuid, "~> 1.2" },
+      {:elixir_uuid, "~> 1.2"},
       {:phoenix, "~> 1.6.8"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -45,7 +45,7 @@ defmodule MultiplayerGame.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
 
