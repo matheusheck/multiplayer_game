@@ -1,6 +1,6 @@
 defmodule MultiplayerGame.Game do
   @derive Jason.Encoder
-  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player_id: nil, pid: nil
+  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player: nil, pid: nil
 
   use Agent
 
@@ -9,22 +9,32 @@ defmodule MultiplayerGame.Game do
   @doc """
   Iniciate the state with Game struct
   """
-  def start_link(initial_state) do
-    IO.inspect("INICIOU")
-    # initial_state = %__MODULE__{}
-    Agent.start_link(fn -> initial_state end, name: __MODULE__)
+  def start_game() do
+    Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
+    |> IO.inspect(label: "#{__MODULE__}.start_game()")
+  end
+
+  def stop_game(pid) do
+    Agent.stop(pid)
+    |> IO.inspect(label: "#{__MODULE__}.stop_game()")
   end
 
   def state do
     Agent.get(__MODULE__, & &1)
   end
-  
-  def reset do
-    Agent.
+
+  def reset_state(pid) do
+    Agent.stop(pid)
+    Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
+    |> IO.inspect(label: "#{__MODULE__}.reset_state()")
   end
 
-  def maybe_add_player(%{id: id} = player), do:
-    add_player(Map.has_key?(state(), id), player)
+  def maybe_add_player(%{id: id} = player) do
+
+    state()
+    |> Map.has_key?(id)
+    |> add_player(player)
+  end
 
   def add_player(true, _), do: state()
   def add_player(_, %{id: id} = player) do

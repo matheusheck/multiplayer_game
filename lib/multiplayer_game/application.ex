@@ -16,8 +16,7 @@ defmodule MultiplayerGame.Application do
       MultiplayerGameWeb.Endpoint,
       # Start a worker by calling: MultiplayerGame.Worker.start_link(arg)
       # {MultiplayerGame.Worker, arg}
-      MultiplayerGameWeb.Presence,
-      {MultiplayerGame.Game, %MultiplayerGame.Game{}}
+      MultiplayerGameWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

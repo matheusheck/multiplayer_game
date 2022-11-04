@@ -8,7 +8,6 @@ defmodule MultiplayerGameWeb.Router do
     plug :put_root_layout, {MultiplayerGameWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug MultiplayerGameWeb.Plug.AssignName
   end
 
   pipeline :api do
@@ -19,9 +18,10 @@ defmodule MultiplayerGameWeb.Router do
     pipe_through :browser
 
     # get "/", PageController, :index
-
-    live "/", GameLive
     live "/admin", AdminLive
+
+    pipe_through MultiplayerGameWeb.Plug.AssignSession
+    live "/", GameLive
   end
 
   # Other scopes may use custom stacks.
