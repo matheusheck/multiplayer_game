@@ -21,7 +21,7 @@ defmodule MultiplayerGameWeb.GameLive do
     """
   end
 
-  def mount(_params, %{"id" => id, "player" => player, "unique_name" => unique_name}, socket) do
+  def mount(_params, %{"player" => player, "unique_name" => unique_name}, socket) do
     socket =
       socket
       |> assign(:player, player)
