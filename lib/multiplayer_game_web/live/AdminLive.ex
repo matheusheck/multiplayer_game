@@ -17,17 +17,22 @@ defmodule MultiplayerGameWeb.AdminLive do
   end
 
   def handle_event("start_game", _value, socket) do
-    {:ok, new_state_pid} = MultiplayerGame.Game.start_game()
-    {:noreply, assign(socket, :state_pid, new_state_pid)}
+    MultiplayerGame.Game.start_game()
+    {:noreply, socket}
   end
 
-  def handle_event("reset_state", _value, %{assigns: %{state_pid: state_pid}} = socket) do
-    {:ok, new_state_pid} = MultiplayerGame.Game.reset_state(state_pid)
-    {:noreply, assign(socket, :state_pid, new_state_pid)}
+  def handle_event("reset_state", _value, socket) do
+    MultiplayerGame.Game.reset_state()
+    {:noreply, socket}
   end
 
-  def handle_event("stop_game", _value, %{assigns: %{state_pid: state_pid}} = socket) do
-    :ok = MultiplayerGame.Game.stop_game(state_pid)
+  def handle_event("stop_game", _value, socket) do
+    :ok = MultiplayerGame.Game.stop_game()
     {:noreply, assign(socket, :state_pid, nil)}
+  end
+
+  def handle_event("key_down", _payload, socket) do
+
+    {:noreply, socket}
   end
 end

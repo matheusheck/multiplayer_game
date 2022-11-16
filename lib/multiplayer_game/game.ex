@@ -14,8 +14,8 @@ defmodule MultiplayerGame.Game do
     |> IO.inspect(label: "#{__MODULE__}.start_game()")
   end
 
-  def stop_game(pid) do
-    Agent.stop(pid)
+  def stop_game() do
+    Agent.stop(__MODULE__)
     |> IO.inspect(label: "#{__MODULE__}.stop_game()")
   end
 
@@ -23,14 +23,13 @@ defmodule MultiplayerGame.Game do
     Agent.get(__MODULE__, & &1)
   end
 
-  def reset_state(pid) do
-    Agent.stop(pid)
+  def reset_state() do
+    Agent.stop(__MODULE__)
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
     |> IO.inspect(label: "#{__MODULE__}.reset_state()")
   end
 
   def maybe_add_player(%{id: id} = player) do
-
     state()
     |> Map.has_key?(id)
     |> add_player(player)
@@ -97,6 +96,8 @@ defmodule MultiplayerGame.Game do
     |> maybe_move_player_right(state)
   end
 
+  def move_player(_), do: state()
+
   defp get_player(state, player_id) do
     state
     |> Map.get(:players)
@@ -126,11 +127,23 @@ defmodule MultiplayerGame.Game do
     Agent.update(__MODULE__, fn state ->
       %{state | players: new_players}
     end)
+
+    notify({:new_state, state()})
   end
 
-  defp update_current_player_id_on_state(current_player_id, state) do
+  defp update_current_player_id_on_state(current_player_id, _state) do
     Agent.update(__MODULE__, fn state ->
       %{state | current_player_id: current_player_id}
     end)
   end
+
+  def subscribe() do
+    Phoenix.PubSub.subscribe(MultiplayerGame.PubSub, "user:123")
+  end
+
+  def notify({topic, state}) do
+    Phoenix.PubSub.broadcast(MultiplayerGame.PubSub, "user:123", {topic, state})
+  end
+
+  def notify_new_state, do: notify({:new_state, state()})
 end
