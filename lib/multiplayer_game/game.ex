@@ -52,9 +52,10 @@ defmodule MultiplayerGame.Game do
 
   def add_fruit() do
     Agent.update(__MODULE__, fn state ->
-      new_fruits = Map.put(state, :fruits, %Fruit{})
-      %{state | fruits: new_fruits}
+      fruit = Fruit.create()
+      %{state | fruits: Map.put(state.fruits, fruit.id, fruit)}
     end)
+    notify_new_state()
   end
 
   def remove_fruit(fruit_id) do
@@ -64,36 +65,12 @@ defmodule MultiplayerGame.Game do
     end)
   end
 
-  def move_player(%{"keyPressed" => "ArrowDown", "playerId" => player_id}) do
+  def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
     state = state()
 
     state
     |> get_player(player_id)
-    |> maybe_move_player_down(state)
-  end
-
-  def move_player(%{"keyPressed" => "ArrowUp", "playerId" => player_id}) do
-    state = state()
-
-    state
-    |> get_player(player_id)
-    |> maybe_move_player_up(state)
-  end
-
-  def move_player(%{"keyPressed" => "ArrowLeft", "playerId" => player_id}) do
-    state = state()
-
-    state
-    |> get_player(player_id)
-    |> maybe_move_player_left(state)
-  end
-
-  def move_player(%{"keyPressed" => "ArrowRight", "playerId" => player_id}) do
-    state = state()
-
-    state
-    |> get_player(player_id)
-    |> maybe_move_player_right(state)
+    |> maybe_move_player(state, keyPressed)
   end
 
   def move_player(_), do: state()
@@ -104,21 +81,15 @@ defmodule MultiplayerGame.Game do
     |> Map.get(player_id)
   end
 
-  defp maybe_move_player_down(%{y: y} = player, state) when y < 9, do:
+  defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9, do:
     update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
-  defp maybe_move_player_down(_player, state), do: state
-
-  defp maybe_move_player_up(%{y: y} = player, state) when y > 0, do:
+  defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0, do:
     update_player_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
-  defp maybe_move_player_up(_player, state), do: state
-
-  defp maybe_move_player_left(%{x: x} = player, state) when x > 0, do:
-  update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
-  defp maybe_move_player_left(_player, state), do: state
-
-  defp maybe_move_player_right(%{x: x} = player, state) when x < 9, do:
+  defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0, do:
+   update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
+  defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 9, do:
     update_player_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
-  defp maybe_move_player_right(_player, state), do: state
+  defp maybe_move_player(_player, state, _key_pressed), do: state
 
   defp update_player_on_state(player, state) do
     other_players = Map.delete(state.players, player.id)
@@ -129,12 +100,6 @@ defmodule MultiplayerGame.Game do
     end)
 
     notify({:new_state, state()})
-  end
-
-  defp update_current_player_id_on_state(current_player_id, _state) do
-    Agent.update(__MODULE__, fn state ->
-      %{state | current_player_id: current_player_id}
-    end)
   end
 
   def subscribe() do
