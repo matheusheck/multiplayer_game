@@ -1,6 +1,6 @@
 defmodule MultiplayerGame.Game do
   @derive Jason.Encoder
-  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player: nil, pid: nil
+  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player: nil, pid: nil, is_adding_fruit?: false
 
   use Agent
 
@@ -63,6 +63,37 @@ defmodule MultiplayerGame.Game do
       new_fruits = Map.delete(state.fruits, fruit_id)
       %{state | fruits: new_fruits}
     end)
+    notify_new_state()
+  end
+
+  def start_adding_fruit do
+    Agent.update(__MODULE__, fn state ->
+      %{state | is_adding_fruit?: true}
+    end)
+    fruit_adder()
+    notify_new_state()
+  end
+
+  def stop_adding_fruit do
+    Agent.update(__MODULE__, fn state ->
+      %{state | is_adding_fruit?: false}
+    end)
+    notify_new_state()
+  end
+
+  def fruit_adder do
+    spawn(fn ->
+      %{is_adding_fruit?: is_adding_fruit?} = state()
+      maybe_add_fruit(is_adding_fruit?)
+      Process.sleep(2000)
+      %{is_adding_fruit?: still_adding_fruit?} = state()
+    if still_adding_fruit?, do: fruit_adder
+    end)
+  end
+
+  def keep_fruit_adder?() do
+    %{is_adding_fruit?: is_adding_fruit?} = state()
+    if is_adding_fruit?, do: fruit_adder
   end
 
   def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
@@ -102,12 +133,16 @@ defmodule MultiplayerGame.Game do
     notify({:new_state, state()})
   end
 
+  defp maybe_add_fruit(is_adding_fruit?)
+  defp maybe_add_fruit(true), do: add_fruit()
+  defp maybe_add_fruit(_), do: nil
+
   def subscribe() do
-    Phoenix.PubSub.subscribe(MultiplayerGame.PubSub, "user:123")
+    Phoenix.PubSub.subscribe(MultiplayerGame.PubSub, "game:123")
   end
 
   def notify({topic, state}) do
-    Phoenix.PubSub.broadcast(MultiplayerGame.PubSub, "user:123", {topic, state})
+    Phoenix.PubSub.broadcast(MultiplayerGame.PubSub, "game:123", {topic, state})
   end
 
   def notify_new_state, do: notify({:new_state, state()})
