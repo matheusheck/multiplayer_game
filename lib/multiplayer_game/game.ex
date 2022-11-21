@@ -11,13 +11,11 @@ defmodule MultiplayerGame.Game do
   """
   def start_game() do
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
-    |> IO.inspect(label: "#{__MODULE__}.start_game()")
-  end
+    end
 
   def stop_game() do
     Agent.stop(__MODULE__)
-    |> IO.inspect(label: "#{__MODULE__}.stop_game()")
-  end
+    end
 
   def state do
     Agent.get(__MODULE__, & &1)
@@ -26,8 +24,7 @@ defmodule MultiplayerGame.Game do
   def reset_state() do
     Agent.stop(__MODULE__)
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
-    |> IO.inspect(label: "#{__MODULE__}.reset_state()")
-  end
+    end
 
   def maybe_add_player(%{id: id} = player) do
     state()
@@ -106,11 +103,24 @@ defmodule MultiplayerGame.Game do
 
   def move_player(_), do: state()
 
+  defp check_fruit_colision(fruits, %{x: x, y: y} = player) do
+    fruits
+    |> get_same_position_fruits(x, y)
+    |> maybe_remove_fruit(fruits)
+  end
+
+  def get_same_position_fruits(fruits, x, y), do:
+    for {id, fruit} <- fruits, fruit != nil && fruit.x == x && fruit.y == y, do: id
+
   defp get_player(state, player_id) do
     state
     |> Map.get(:players)
     |> Map.get(player_id)
   end
+
+  defp maybe_remove_fruit([id_to_remove | _], fruits), do:
+    Map.delete(fruits, id_to_remove)
+  defp maybe_remove_fruit(_, fruits), do: fruits
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9, do:
     update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
@@ -124,10 +134,12 @@ defmodule MultiplayerGame.Game do
 
   defp update_player_on_state(player, state) do
     other_players = Map.delete(state.players, player.id)
+    # add score to player
     new_players = Map.put(other_players, player.id, player)
+    fruits = check_fruit_colision(state.fruits, player)
 
     Agent.update(__MODULE__, fn state ->
-      %{state | players: new_players}
+      %{state | players: new_players, fruits: fruits}
     end)
 
     notify({:new_state, state()})
