@@ -1,4 +1,4 @@
-const renderScreen = () => {(game, requestAnimationFrame, currentPlayerId) {
+export function renderScreen(game, requestAnimationFrame, currentPlayerId) {
     const screen = document.getElementById('screen')
     const context = screen.getContext('2d')
     context.fillStyle = 'white'
@@ -26,6 +26,4 @@ const renderScreen = () => {(game, requestAnimationFrame, currentPlayerId) {
     requestAnimationFrame(() => {
         renderScreen(game, requestAnimationFrame, currentPlayerId)
     })
-}}
-
-export function renderScreen()
+}

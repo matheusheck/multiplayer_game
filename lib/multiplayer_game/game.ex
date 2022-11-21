@@ -1,6 +1,11 @@
 defmodule MultiplayerGame.Game do
   @derive Jason.Encoder
-  defstruct players: %{}, fruits: %{}, screen: %{width: 10, height: 10}, current_player: nil, pid: nil, is_adding_fruit?: false
+  defstruct players: %{},
+            fruits: %{},
+            screen: %{width: 10, height: 10},
+            current_player: nil,
+            pid: nil,
+            is_adding_fruit?: false
 
   use Agent
 
@@ -11,11 +16,11 @@ defmodule MultiplayerGame.Game do
   """
   def start_game() do
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
-    end
+  end
 
   def stop_game() do
     Agent.stop(__MODULE__)
-    end
+  end
 
   def state do
     Agent.get(__MODULE__, & &1)
@@ -24,7 +29,7 @@ defmodule MultiplayerGame.Game do
   def reset_state() do
     Agent.stop(__MODULE__)
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)
-    end
+  end
 
   def maybe_add_player(%{id: id} = player) do
     state()
@@ -33,6 +38,7 @@ defmodule MultiplayerGame.Game do
   end
 
   def add_player(true, _), do: state()
+
   def add_player(_, %{id: id} = player) do
     Agent.update(__MODULE__, fn state ->
       new_players = Map.put(state.players, id, player)
@@ -52,6 +58,7 @@ defmodule MultiplayerGame.Game do
       fruit = Fruit.create()
       %{state | fruits: Map.put(state.fruits, fruit.id, fruit)}
     end)
+
     notify_new_state()
   end
 
@@ -60,6 +67,7 @@ defmodule MultiplayerGame.Game do
       new_fruits = Map.delete(state.fruits, fruit_id)
       %{state | fruits: new_fruits}
     end)
+
     notify_new_state()
   end
 
@@ -67,6 +75,7 @@ defmodule MultiplayerGame.Game do
     Agent.update(__MODULE__, fn state ->
       %{state | is_adding_fruit?: true}
     end)
+
     fruit_adder()
     notify_new_state()
   end
@@ -75,6 +84,7 @@ defmodule MultiplayerGame.Game do
     Agent.update(__MODULE__, fn state ->
       %{state | is_adding_fruit?: false}
     end)
+
     notify_new_state()
   end
 
@@ -84,13 +94,13 @@ defmodule MultiplayerGame.Game do
       maybe_add_fruit(is_adding_fruit?)
       Process.sleep(2000)
       %{is_adding_fruit?: still_adding_fruit?} = state()
-    if still_adding_fruit?, do: fruit_adder
+      if still_adding_fruit?, do: fruit_adder()
     end)
   end
 
   def keep_fruit_adder?() do
     %{is_adding_fruit?: is_adding_fruit?} = state()
-    if is_adding_fruit?, do: fruit_adder
+    if is_adding_fruit?, do: fruit_adder()
   end
 
   def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
@@ -103,14 +113,14 @@ defmodule MultiplayerGame.Game do
 
   def move_player(_), do: state()
 
-  defp check_fruit_colision(fruits, %{x: x, y: y} = player) do
+  defp check_fruit_colision(fruits, %{x: x, y: y} = _player) do
     fruits
     |> get_same_position_fruits(x, y)
     |> maybe_remove_fruit(fruits)
   end
 
-  def get_same_position_fruits(fruits, x, y), do:
-    for {id, fruit} <- fruits, fruit != nil && fruit.x == x && fruit.y == y, do: id
+  def get_same_position_fruits(fruits, x, y),
+    do: for({id, fruit} <- fruits, fruit != nil && fruit.x == x && fruit.y == y, do: id)
 
   defp get_player(state, player_id) do
     state
@@ -118,18 +128,21 @@ defmodule MultiplayerGame.Game do
     |> Map.get(player_id)
   end
 
-  defp maybe_remove_fruit([id_to_remove | _], fruits), do:
-    Map.delete(fruits, id_to_remove)
+  defp maybe_remove_fruit([id_to_remove | _], fruits), do: Map.delete(fruits, id_to_remove)
   defp maybe_remove_fruit(_, fruits), do: fruits
 
-  defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9, do:
-    update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
-  defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0, do:
-    update_player_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
-  defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0, do:
-   update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
-  defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 9, do:
-    update_player_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
+  defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9,
+    do: update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
+
+  defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0,
+    do: update_player_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
+
+  defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0,
+    do: update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
+
+  defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 9,
+    do: update_player_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
+
   defp maybe_move_player(_player, state, _key_pressed), do: state
 
   defp update_player_on_state(player, state) do

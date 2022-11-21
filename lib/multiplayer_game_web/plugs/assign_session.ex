@@ -14,6 +14,7 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
       |> Plug.Conn.put_session(:unique_name, name)
       |> Plug.Conn.put_session(:id, id)
       |> Plug.Conn.put_session(:player, player)
+
     conn
   end
 end

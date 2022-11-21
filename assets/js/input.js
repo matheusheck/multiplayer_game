@@ -17,4 +17,4 @@ const keyboard_listener = {
     }
   };
 
-  export function keyboard_listener()
+  export {keyboard_listener};

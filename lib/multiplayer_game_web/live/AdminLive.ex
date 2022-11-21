@@ -44,17 +44,16 @@ defmodule MultiplayerGameWeb.AdminLive do
     {:noreply, assign(socket, :keep_adding_fruits, false)}
   end
 
-  def handle_info({:new_state, %{is_adding_fruit?: is_adding_fruit?}}, socket) do
-    {:noreply, assign(socket, :keep_adding_fruits, is_adding_fruit?)}
-  end
-
   def handle_event("stop_game", _value, socket) do
     :ok = MultiplayerGame.Game.stop_game()
     {:noreply, assign(socket, :state_pid, nil)}
   end
 
   def handle_event("key_down", _payload, socket) do
-
     {:noreply, socket}
+  end
+
+  def handle_info({:new_state, %{is_adding_fruit?: is_adding_fruit?}}, socket) do
+    {:noreply, assign(socket, :keep_adding_fruits, is_adding_fruit?)}
   end
 end
