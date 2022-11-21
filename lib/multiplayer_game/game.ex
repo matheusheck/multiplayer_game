@@ -128,28 +128,30 @@ defmodule MultiplayerGame.Game do
     |> Map.get(player_id)
   end
 
-  defp maybe_remove_fruit([id_to_remove | _], fruits), do: Map.delete(fruits, id_to_remove)
-  defp maybe_remove_fruit(_, fruits), do: fruits
+  defp maybe_remove_fruit([id_to_remove | _], fruits), do:
+    {:ok, Map.delete(fruits, id_to_remove)}
+  defp maybe_remove_fruit(_, fruits), do: {:no_colision, fruits}
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9,
-    do: update_player_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
+    do: update_player_moviment_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0,
-    do: update_player_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
+    do: update_player_moviment_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
 
   defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0,
-    do: update_player_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
+    do: update_player_moviment_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
 
   defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 9,
-    do: update_player_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
+    do: update_player_moviment_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
 
   defp maybe_move_player(_player, state, _key_pressed), do: state
 
-  defp update_player_on_state(player, state) do
+  defp update_player_moviment_on_state(player, state) do
     other_players = Map.delete(state.players, player.id)
     # add score to player
+    {player_scored?, fruits} = check_fruit_colision(state.fruits, player)
+    player = update_player_score(player_scored?, player)
     new_players = Map.put(other_players, player.id, player)
-    fruits = check_fruit_colision(state.fruits, player)
 
     Agent.update(__MODULE__, fn state ->
       %{state | players: new_players, fruits: fruits}
@@ -161,6 +163,10 @@ defmodule MultiplayerGame.Game do
   defp maybe_add_fruit(is_adding_fruit?)
   defp maybe_add_fruit(true), do: add_fruit()
   defp maybe_add_fruit(_), do: nil
+
+  defp update_player_score(player_scored?, player)
+  defp update_player_score(:no_colision, player), do: player
+  defp update_player_score(_, %{points: points} = player), do: %MultiplayerGame.Player{player | points: points + 1}
 
   def subscribe() do
     Phoenix.PubSub.subscribe(MultiplayerGame.PubSub, "game:123")

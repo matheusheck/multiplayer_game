@@ -1,6 +1,6 @@
 defmodule MultiplayerGame.Player do
   @derive Jason.Encoder
-  defstruct x: nil, y: nil, id: nil, name: nil
+  defstruct x: nil, y: nil, id: nil, name: nil, points: 0
 
   @type t() :: %__MODULE__{
           x: integer(),
