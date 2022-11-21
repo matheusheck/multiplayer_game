@@ -22,6 +22,15 @@ defmodule MultiplayerGame.Game.State do
     Agent.get(__MODULE__, & &1)
   end
 
+  def up? do
+    try do
+      Agent.get(__MODULE__, & &1)
+      true
+    catch
+      :exit, _ -> false
+    end
+  end
+
   def reset_state() do
     Agent.stop(__MODULE__)
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)

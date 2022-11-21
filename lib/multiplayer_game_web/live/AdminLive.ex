@@ -5,7 +5,11 @@ defmodule MultiplayerGameWeb.AdminLive do
     ~H"""
     <section phx-hook="Listener" id="game" class="flex flex-col w-screen h-screen justify-center items-center text-center">
       <h1>Admin</h1>
+      <br />
+      <p>Is game state initiated: <%= @is_game_state_initiated? %></p>
+      <br />
       <button phx-click="start_game">Start Game</button>
+      <p :if={@is_game_state_initiated?}>play at <a href="/" target="_blank"> AQUI </a></p>
       <button phx-click="reset_state">Reset</button>
       <button phx-click="stop_game">Stop game</button>
       <br />
@@ -21,12 +25,17 @@ defmodule MultiplayerGameWeb.AdminLive do
 
   def mount(_params, _session, socket) do
     MultiplayerGame.Game.State.subscribe()
+    socket =
+      socket
+      |> assign(:keep_adding_fruits, false)
+      |> assign(:is_game_state_initiated?, false)
+
     {:ok, assign(socket, :keep_adding_fruits, false)}
   end
 
   def handle_event("start_game", _value, socket) do
     MultiplayerGame.Game.State.start_game()
-    {:noreply, socket}
+    {:noreply, assign(socket, :is_game_state_initiated?, true)}
   end
 
   def handle_event("reset_state", _value, socket) do
@@ -46,7 +55,11 @@ defmodule MultiplayerGameWeb.AdminLive do
 
   def handle_event("stop_game", _value, socket) do
     :ok = MultiplayerGame.Game.State.stop_game()
-    {:noreply, assign(socket, :state_pid, nil)}
+    socket =
+      socket
+      |> assign(:state_pid, nil)
+      |> assign(:is_game_state_initiated?, false)
+    {:noreply, socket}
   end
 
   def handle_event("key_down", _payload, socket) do

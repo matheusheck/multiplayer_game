@@ -1,5 +1,4 @@
 defmodule MultiplayerGame.Game do
-
   alias MultiplayerGame.Fruit
   alias MultiplayerGame.Game.State
 
@@ -53,8 +52,7 @@ defmodule MultiplayerGame.Game do
     |> Map.get(player_id)
   end
 
-  defp maybe_remove_fruit([id_to_remove | _], fruits), do:
-    {:ok, Map.delete(fruits, id_to_remove)}
+  defp maybe_remove_fruit([id_to_remove | _], fruits), do: {:ok, Map.delete(fruits, id_to_remove)}
   defp maybe_remove_fruit(_, fruits), do: {:no_colision, fruits}
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9,
@@ -78,7 +76,6 @@ defmodule MultiplayerGame.Game do
     player = update_player_score(player_scored?, player)
     new_players = Map.put(other_players, player.id, player)
 
-
     State.update_state(:players, new_players)
     State.update_state(:fruits, fruits)
 
@@ -87,5 +84,7 @@ defmodule MultiplayerGame.Game do
 
   defp update_player_score(player_scored?, player)
   defp update_player_score(:no_colision, player), do: player
-  defp update_player_score(_, %{points: points} = player), do: %MultiplayerGame.Player{player | points: points + 1}
+
+  defp update_player_score(_, %{points: points} = player),
+    do: %MultiplayerGame.Player{player | points: points + 1}
 end

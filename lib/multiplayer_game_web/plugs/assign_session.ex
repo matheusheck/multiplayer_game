@@ -6,15 +6,22 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
   end
 
   def call(conn, _opts) do
-    %{id: id, name: name} = player = MultiplayerGame.Player.create()
-    MultiplayerGame.Game.maybe_add_player(player)
+    with true <- MultiplayerGame.Game.State.up?() do
+      %{id: id, name: name} = player = MultiplayerGame.Player.create()
+      MultiplayerGame.Game.maybe_add_player(player)
 
-    conn =
+      conn =
+        conn
+        |> Plug.Conn.put_session(:unique_name, name)
+        |> Plug.Conn.put_session(:id, id)
+        |> Plug.Conn.put_session(:player, player)
+
       conn
-      |> Plug.Conn.put_session(:unique_name, name)
-      |> Plug.Conn.put_session(:id, id)
-      |> Plug.Conn.put_session(:player, player)
-
-    conn
+    else
+      _ ->
+        conn
+        |> Phoenix.Controller.redirect(to: "/admin")
+        |> Plug.Conn.halt()
+    end
   end
 end

@@ -67,5 +67,4 @@ defmodule MultiplayerGame.Fruit do
   defp maybe_add_fruit(is_adding_fruit?)
   defp maybe_add_fruit(true), do: add_fruit()
   defp maybe_add_fruit(_), do: nil
-
 end
