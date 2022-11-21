@@ -1,4 +1,4 @@
-const keyboard_listener = {
+const listener = {
     mounted() {
         window.addEventListener('keydown', e => this.handleKeydown(e))
     },
@@ -16,5 +16,5 @@ const keyboard_listener = {
         this.pushEvent("key_down", command)
     }
   };
-
-  export {keyboard_listener};
+  
+  export {listener};

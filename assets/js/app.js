@@ -1,15 +1,32 @@
 
 import "phoenix_html"
-// Establish Phoenix Socket and LiveView configuration.
-import { Socket } from "phoenix"
-import { LiveSocket } from "phoenix_live_view"
-import { keyboard_listener } from "./input"
+import {Socket} from "phoenix"
+import {LiveSocket} from "phoenix_live_view"
+// import { listener } from "./input"
 import { renderScreen } from "./render"
 
 let hooks = {};
 let current_player_id = null
 
-hooks.Listener = keyboard_listener(current_player_id)
+hooks.Listener = {
+    mounted() {
+        window.addEventListener('keydown', e => this.handleKeydown(e))
+    },
+
+    handleKeydown(event) {
+        console.log(event)
+        const keyPressed = event.key
+    
+        const command = {
+            type: 'move-player',
+            playerId: current_player_id,
+            keyPressed
+        }
+    
+        this.pushEvent("key_down", command)
+    }
+  };
+  
 
 window.addEventListener(
     "phx:game",
