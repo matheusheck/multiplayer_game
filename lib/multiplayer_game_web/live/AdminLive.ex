@@ -40,9 +40,7 @@ defmodule MultiplayerGameWeb.AdminLive do
   end
 
   def handle_event("stop_fruits_add", _value, socket) do
-    IO.inspect("Passou aqui")
     MultiplayerGame.Game.stop_adding_fruit()
-    IO.inspect("E TB ...  Passou aqui")
     {:noreply, assign(socket, :keep_adding_fruits, false)}
   end
 

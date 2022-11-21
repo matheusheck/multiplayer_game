@@ -2,7 +2,7 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
   def init(opts), do: opts
 
   def call(conn = %{session: %{id: _}}, _opts) do
-    conn |> IO.inspect(label: "...............AQUIIIIIII......")
+    conn
   end
 
   def call(conn, _opts) do
