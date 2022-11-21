@@ -20,32 +20,32 @@ defmodule MultiplayerGameWeb.AdminLive do
   end
 
   def mount(_params, _session, socket) do
-    MultiplayerGame.Game.subscribe()
+    MultiplayerGame.Game.State.subscribe()
     {:ok, assign(socket, :keep_adding_fruits, false)}
   end
 
   def handle_event("start_game", _value, socket) do
-    MultiplayerGame.Game.start_game()
+    MultiplayerGame.Game.State.start_game()
     {:noreply, socket}
   end
 
   def handle_event("reset_state", _value, socket) do
-    MultiplayerGame.Game.reset_state()
+    MultiplayerGame.Game.State.reset_state()
     {:noreply, socket}
   end
 
   def handle_event("stat_fruits_add", _value, socket) do
-    MultiplayerGame.Game.start_adding_fruit()
+    MultiplayerGame.Fruit.start_adding_fruit()
     {:noreply, assign(socket, :keep_adding_fruits, true)}
   end
 
   def handle_event("stop_fruits_add", _value, socket) do
-    MultiplayerGame.Game.stop_adding_fruit()
+    MultiplayerGame.Fruit.stop_adding_fruit()
     {:noreply, assign(socket, :keep_adding_fruits, false)}
   end
 
   def handle_event("stop_game", _value, socket) do
-    :ok = MultiplayerGame.Game.stop_game()
+    :ok = MultiplayerGame.Game.State.stop_game()
     {:noreply, assign(socket, :state_pid, nil)}
   end
 

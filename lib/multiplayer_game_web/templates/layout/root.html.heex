@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content={csrf_token_value()}>
-    <%= live_title_tag assigns[:page_title] || "MultiplayerGame", suffix: " · Phoenix Framework" %>
+    <%= live_title_tag assigns[:page_title] || "MultiplayerGame" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <%= csrf_meta_tag() %>
     <script>sessionStorage.userToken = sessionStorage.userToken || "<%= assigns[:user_token] %>"</script>
