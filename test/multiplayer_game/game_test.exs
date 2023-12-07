@@ -10,6 +10,7 @@ defmodule MultiplayerGame.GameTest do
     {:ok, state: State.get()}
   end
 
+  @tag :focus
   test "maybe_add_player/2 adds a new player to the state" do
     player = %{id: "player1", name: "Alice"}
     new_state = Game.maybe_add_player(player)
