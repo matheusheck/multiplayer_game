@@ -1,3 +1,4 @@
+![example workflow](https://github.com/matheusheck/multiplayer_game/actions/workflows/elixir.yml/badge.svg)
 # My multiplayer Game
 
 ![screenshot of this game](https://user-images.githubusercontent.com/39709032/203156946-1bbea095-8d86-4b17-908e-5d769b110217.png)
