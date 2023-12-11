@@ -1,17 +1,9 @@
 defmodule MultiplayerGame.Game do
-  alias MultiplayerGame.Fruit
   alias MultiplayerGame.Game.State
 
   @doc """
   Iniciate the state with Game struct
   """
-
-  def add_player(true, _), do: State.get()
-
-  def add_player(_, %{id: id} = player) do
-    state = State.get()
-    State.update_state(:players, Map.put(state.players, id, player))
-  end
 
   def maybe_add_player(%{id: id} = player) do
     State.get()
@@ -87,4 +79,11 @@ defmodule MultiplayerGame.Game do
 
   defp update_player_score(_, %{points: points} = player),
     do: %MultiplayerGame.Player{player | points: points + 1}
+
+  defp add_player(true, _), do: State.get()
+
+  defp add_player(_, %{id: id} = player) do
+    state = State.get()
+    State.update_state(:players, Map.put(state.players, id, player))
+  end
 end

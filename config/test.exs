@@ -5,7 +5,12 @@ import Config
 config :multiplayer_game, MultiplayerGameWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "OA+ruM8/x24BR6V+3pcdomGPPi+eM5JUKLFaeyJNu4dORVHmIV2R0IGKXW7JhE3M",
-  server: false
+  server: false,
+  session_options: [
+    store: :cookie,
+    key: "_multiplayer_game_key",
+    signing_salt: "w4dxsV5v"
+  ]
 
 # Print only warnings and errors during test
 config :logger, level: :warn

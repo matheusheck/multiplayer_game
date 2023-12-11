@@ -37,9 +37,12 @@ defmodule MultiplayerGame.Game.State do
   end
 
   def update_state(key_to_be_updated, new_value) do
-    Agent.update(__MODULE__, fn state ->
-      Map.replace(state, key_to_be_updated, new_value)
-    end)
+    :ok =
+      Agent.update(__MODULE__, fn state ->
+        Map.replace(state, key_to_be_updated, new_value)
+      end)
+
+    {:ok, get()}
   end
 
   def subscribe() do

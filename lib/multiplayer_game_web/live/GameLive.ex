@@ -1,7 +1,6 @@
 defmodule MultiplayerGameWeb.GameLive do
   use MultiplayerGameWeb, :live_view
 
-  alias MultiplayerGame.Game
   alias MultiplayerGame.Game.State
 
   # def struct do game
