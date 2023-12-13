@@ -1,6 +1,7 @@
 defmodule MultiplayerGameWeb.GameLive do
   use MultiplayerGameWeb, :live_view
 
+  alias MultiplayerGame.Game
   alias MultiplayerGame.Game.State
 
   # def struct do game
@@ -41,6 +42,10 @@ defmodule MultiplayerGameWeb.GameLive do
     State.subscribe()
     State.notify_new_state()
     {:ok, socket}
+  end
+
+  def terminate(reason, %{assigns: %{player: %{id: player_id}}}) do
+    Game.remove_player(player_id)
   end
 
   def handle_info({:new_state, state}, %{assigns: %{player: %{id: id}}} = socket) do

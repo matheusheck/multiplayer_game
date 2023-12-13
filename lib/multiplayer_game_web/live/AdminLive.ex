@@ -25,6 +25,7 @@ defmodule MultiplayerGameWeb.AdminLive do
 
   def mount(_params, _session, socket) do
     MultiplayerGame.Game.State.subscribe()
+
     socket =
       socket
       |> assign(:keep_adding_fruits, false)
@@ -55,10 +56,12 @@ defmodule MultiplayerGameWeb.AdminLive do
 
   def handle_event("stop_game", _value, socket) do
     :ok = MultiplayerGame.Game.State.stop_game()
+
     socket =
       socket
       |> assign(:state_pid, nil)
       |> assign(:is_game_state_initiated?, false)
+
     {:noreply, socket}
   end
 
