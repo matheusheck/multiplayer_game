@@ -12,18 +12,21 @@ defmodule MultiplayerGame.Game do
   end
 
   def remove_player(player_id) do
-    state = State.get()
-
-    case Map.get(state.players, player_id) do
-      nil ->
-        # Player with the specified ID doesn't exist, no need to remove.
-        state
-
-      _ ->
+    case count_players() do
+      0 ->
+        state = State.get()
         new_players = Map.delete(state.players, player_id)
         State.update_state(:players, new_players)
         State.notify_new_state()
+
+      _ ->
+        MultiplayerGame.Game.State.stop_game()
     end
+  end
+
+  def count_players() do
+    state = State.get()
+    Enum.count(state.players)
   end
 
   def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
