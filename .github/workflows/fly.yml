@@ -30,10 +30,7 @@ jobs:
         run: mix test
 
   deploy:
-                  
-- name: GitHub Action for flyctl
-
-
-              
-  uses: superfly/flyctl-actions@1.4
-
+    name: GitHub Action for flyctl
+    needs: elixir-ci
+    uses: superfly/flyctl-actions@1.4
+            
