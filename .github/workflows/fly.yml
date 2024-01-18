@@ -30,8 +30,9 @@ jobs:
         run: mix test
 
   deploy:
+    name: Deploy
+    needs: elixir-ci
+    runs-on: ubuntu-latest
     steps:
       - name: GitHub Action for flyctl
-      needs: elixir-ci
-      uses: superfly/flyctl-actions@1.4
-            
+        uses: superfly/flyctl-actions@1.4
