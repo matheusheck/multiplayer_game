@@ -29,22 +29,54 @@ defmodule MultiplayerGameWeb.GameLive do
           <p><%= player.name %> scored <%= if @state != nil, do: Map.get(@state.players[player.id], :points) %></p>
         <% end %>
       </div>
-      <svg  phx-click="ArrowUp" width="80px" height="80px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)">
-        <path d="M18.6 3H5.4A2.4 2.4 0 0 0 3 5.4v13.2A2.4 2.4 0 0 0 5.4 21h13.2a2.4 2.4 0 0 0 2.4-2.4V5.4A2.4 2.4 0 0 0 18.6 3Z" fill="#000000" fill-opacity=".16" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10"/>
-        <path d="m8 12 4 4 4-4" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 16V8" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
-      </svg>
-      <svg  phx-click="ArrowDown" width="80px" height="80px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.6 3H5.4A2.4 2.4 0 0 0 3 5.4v13.2A2.4 2.4 0 0 0 5.4 21h13.2a2.4 2.4 0 0 0 2.4-2.4V5.4A2.4 2.4 0 0 0 18.6 3Z" fill="#000000" fill-opacity=".16" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10"/><path d="m8 12 4 4 4-4" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V8" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/></svg>
-      <svg  phx-click="ArrowLeft" width="80px" height="80px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)">
-        <path d="M18.6 3H5.4A2.4 2.4 0 0 0 3 5.4v13.2A2.4 2.4 0 0 0 5.4 21h13.2a2.4 2.4 0 0 0 2.4-2.4V5.4A2.4 2.4 0 0 0 18.6 3Z" fill="#000000" fill-opacity=".16" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10"/>
-        <path d="m8 12 4 4 4-4" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 16V8" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
-      </svg>
-      <svg phx-click="ArrowRight" width="80px" height="80px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(270)">
-        <path d="M18.6 3H5.4A2.4 2.4 0 0 0 3 5.4v13.2A2.4 2.4 0 0 0 5.4 21h13.2a2.4 2.4 0 0 0 2.4-2.4V5.4A2.4 2.4 0 0 0 18.6 3Z" fill="#000000" fill-opacity=".16" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10"/>
-        <path d="m8 12 4 4 4-4" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 16V8" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
-      </svg>
+      <div class="justify-center items-center">
+        <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 max-w-sm  mx-auto">
+          <div
+            phx-click="ArrowUp"
+            class="col-start-2 row-start-1 width-20 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowUp"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(0, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </div>
+          <button
+            phx-click="ArrowLeft"
+            class="col-start-1 row-start-2 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowLeft"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(-90, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+          <button
+            phx-click="ArrowDown"
+            class="col-start-2 row-start-3 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowDown"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(180, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+          <button
+            phx-click="ArrowRight"
+            class="col-start-3 row-start-2 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowRight"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(90, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
     """
   end
 
@@ -77,13 +109,14 @@ defmodule MultiplayerGameWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event("key_down", payload, socket) do
+    MultiplayerGame.Game.move_player(payload)
+    {:noreply, socket}
+  end
+
   def handle_event(click_arrow, _payload, %{assigns: %{player: %{id: player_id}}} = socket) do
     MultiplayerGame.Game.move_player(%{"keyPressed" => click_arrow, "playerId" => player_id})
     {:noreply, socket}
   end
 
-  def handle_event("key_down", payload, socket) do
-    MultiplayerGame.Game.move_player(payload)
-    {:noreply, socket}
-  end
 end

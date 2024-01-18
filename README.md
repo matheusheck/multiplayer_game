@@ -17,8 +17,8 @@ This app uses `.tools-version` and recommend using ASDF to install. Check guide 
 
 To start your Phoenix server:
 
-- Install ESBuild `mix esbuild.install`
 - Install dependencies with `mix deps.get`
+- Install ESBuild `mix esbuild.install`
 - Generate assets `mix assets.deploy`
 - Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 

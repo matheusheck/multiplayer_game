@@ -88,9 +88,9 @@ defmodule MultiplayerGame.Game do
   end
 
   defp update_player_score(player_scored?, player)
-  defp update_player_score(:collision, player), do: player
+  defp update_player_score(:no_collision, player), do: player
 
-  defp update_player_score(_, %{points: points} = player),
+  defp update_player_score(:ok, %{points: points} = player),
     do: %MultiplayerGame.Player{player | points: points + 1}
 
   defp add_player(true, _), do: State.get()
