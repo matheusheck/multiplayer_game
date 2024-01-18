@@ -1,5 +1,4 @@
 name: Fly Deploy
-needs: Elixir CI
 on:
   push:
     branches:
@@ -7,6 +6,7 @@ on:
 jobs:
   deploy:
     name: Deploy app
+    needs: Elixir CI
     runs-on: ubuntu-latest
     concurrency: deploy-group    # optional: ensure only one action runs at a time
     steps:
