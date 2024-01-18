@@ -46,6 +46,8 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
+COPY assets assets
+
 # compile assets
 RUN mix assets.deploy
 
@@ -53,7 +55,6 @@ COPY priv priv
 
 COPY lib lib
 
-COPY assets assets
 
 # Compile the release
 RUN mix compile
