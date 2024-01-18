@@ -18,10 +18,9 @@ ARG DEBIAN_VERSION=bullseye-20210902-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
+ARG CACHEBUST=1
 
 FROM ${BUILDER_IMAGE} as builder
-
-ARG CACHEBUST=1
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git \
