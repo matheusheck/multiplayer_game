@@ -35,4 +35,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Action for flyctl
-        uses: superfly/flyctl-actions@1.4
+        uses: superfly/flyctl-actions@1.3
