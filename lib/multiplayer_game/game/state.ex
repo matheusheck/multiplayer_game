@@ -60,5 +60,9 @@ defmodule MultiplayerGame.Game.State do
     Phoenix.PubSub.broadcast(MultiplayerGame.PubSub, "game:123", {topic, state})
   end
 
-  def notify_new_state, do: notify({:new_state, get()})
+  def notify_new_state do
+    with true <- up?() do
+      notify({:new_state, get()})
+    end
+  end
 end

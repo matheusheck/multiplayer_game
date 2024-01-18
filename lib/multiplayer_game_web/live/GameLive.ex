@@ -118,5 +118,4 @@ defmodule MultiplayerGameWeb.GameLive do
     MultiplayerGame.Game.move_player(%{"keyPressed" => click_arrow, "playerId" => player_id})
     {:noreply, socket}
   end
-
 end

@@ -12,8 +12,8 @@ defmodule MultiplayerGame.Game do
   end
 
   def remove_player(player_id) do
-    case count_players() do
-      0 ->
+    case count_players() > 1 do
+      true ->
         state = State.get()
         new_players = Map.delete(state.players, player_id)
         State.update_state(:players, new_players)
@@ -25,8 +25,12 @@ defmodule MultiplayerGame.Game do
   end
 
   def count_players() do
-    state = State.get()
-    Enum.count(state.players)
+    with true <- State.up?() do
+      state = State.get()
+      Enum.count(state.players)
+    else
+      false -> 0
+    end
   end
 
   def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
