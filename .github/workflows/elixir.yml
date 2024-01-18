@@ -3,13 +3,15 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Elixir CI
+name: Elixir Tests
 
 on:
   pull_request:
-    branches: '*'
+      - '*'  # Run on all branches
+      - '!master'  # Exclude the master branch
   push:
-    branches: '*'
+      - '*'  # Run on all branches
+      - '!master'  # Exclude the master branch
 
 permissions:
   contents: read
