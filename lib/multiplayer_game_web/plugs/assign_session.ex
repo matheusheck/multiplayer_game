@@ -6,7 +6,7 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
   end
 
   def call(conn, _opts) do
-    with true <- MultiplayerGame.Game.State.up?() do
+    with {:ok, _} <- MultiplayerGame.Game.State.maybe_start_game() do
       %{id: id, name: name} = player = MultiplayerGame.Player.create()
       MultiplayerGame.Game.maybe_add_player(player)
 
@@ -17,11 +17,6 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
         |> Plug.Conn.put_session(:player, player)
 
       conn
-    else
-      _ ->
-        conn
-        |> Phoenix.Controller.redirect(to: "/admin")
-        |> Plug.Conn.halt()
     end
   end
 end

@@ -16,19 +16,67 @@ defmodule MultiplayerGameWeb.GameLive do
 
   def render(assigns) do
     ~H"""
-    <div class="justify-center items-center text-center">
-      <h1>Hi, <%= @unique_name %></h1>
-      <h1>You scored <%= if @state.players[@player.id] != nil, do: Map.get(@state.players[@player.id], :points) %></h1>
-    </div>
-    <section phx-hook="Listener" id="game" class="flex flex-col w-screen justify-center items-center text-center">
-      <canvas class="game border-2 unblur" width="10" height="10" id="screen" phx-update="ignore"></canvas>
-    </section>
-    <div class="justify-center items-center text-center">
-      <h1>Scores </h1>
-      <%= for {_id, player} <- @state.players do %>
-        <p><%= player.name %> scored <%= if @state != nil, do: Map.get(@state.players[player.id], :points) %></p>
-      <% end %>
-    </div>
+      <div class="justify-center items-center text-center">
+        <h1>Hi, <%= @unique_name %></h1>
+        <h1>You scored <%= if @state.players[@player.id] != nil, do: Map.get(@state.players[@player.id], :points) %></h1>
+      </div>
+      <section phx-hook="Listener" id="game" class="flex flex-col w-screen justify-center items-center text-center">
+        <canvas class="game border-2 unblur" width="10" height="10" id="screen" phx-update="ignore"></canvas>
+      </section>
+      <div class="justify-center items-center text-center">
+        <h1>Scores </h1>
+        <%= for {_id, player} <- @state.players do %>
+          <p><%= player.name %> scored <%= if @state != nil, do: Map.get(@state.players[player.id], :points) %></p>
+        <% end %>
+      </div>
+      <div class="justify-center items-center">
+        <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 max-w-sm  mx-auto">
+          <div
+            phx-click="ArrowUp"
+            class="col-start-2 row-start-1 width-20 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowUp"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(0, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </div>
+          <button
+            phx-click="ArrowLeft"
+            class="col-start-1 row-start-2 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowLeft"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(-90, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+          <button
+            phx-click="ArrowDown"
+            class="col-start-2 row-start-3 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowDown"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(180, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+          <button
+            phx-click="ArrowRight"
+            class="col-start-3 row-start-2 focus:outline-none bg-gray-200 w-10 border-none p-1 transition-transform transform hover:scale-105"
+            id="ArrowRight"
+          >
+            <svg width="30" height="20" viewBox="0 0 10 10">
+              <g transform="rotate(90, 5, 5)">
+                <path d="M5,4 L7,6 L3,6 L5,4" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
     """
   end
 
@@ -39,12 +87,14 @@ defmodule MultiplayerGameWeb.GameLive do
       |> assign(:unique_name, unique_name)
       |> assign(:state, State.get())
 
+    if MultiplayerGame.Game.count_players() == 2, do: MultiplayerGame.Fruit.start_adding_fruit()
     State.subscribe()
     State.notify_new_state()
     {:ok, socket}
   end
 
-  def terminate(reason, %{assigns: %{player: %{id: player_id}}}) do
+  def terminate(_reason, %{assigns: %{player: %{id: player_id}}}) do
+    if MultiplayerGame.Game.count_players() == 1, do: MultiplayerGame.Fruit.stop_adding_fruit()
     Game.remove_player(player_id)
   end
 
@@ -63,4 +113,10 @@ defmodule MultiplayerGameWeb.GameLive do
     MultiplayerGame.Game.move_player(payload)
     {:noreply, socket}
   end
+
+  def handle_event(click_arrow, _payload, %{assigns: %{player: %{id: player_id}}} = socket) do
+    MultiplayerGame.Game.move_player(%{"keyPressed" => click_arrow, "playerId" => player_id})
+    {:noreply, socket}
+  end
+
 end

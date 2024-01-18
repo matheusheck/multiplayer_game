@@ -31,6 +31,13 @@ defmodule MultiplayerGame.Game.State do
     end
   end
 
+  def maybe_start_game do
+    case up?() do
+      true -> {:ok, :state_was_up}
+      false -> start_game()
+    end
+  end
+
   def reset_state() do
     Agent.stop(__MODULE__)
     Agent.start_link(fn -> %__MODULE__{} end, name: __MODULE__)

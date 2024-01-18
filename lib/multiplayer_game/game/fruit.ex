@@ -40,6 +40,7 @@ defmodule MultiplayerGame.Fruit do
 
   def start_adding_fruit do
     State.update_state(:is_adding_fruit?, true)
+    Process.sleep(5000)
     fruit_adder()
     State.notify_new_state()
   end
