@@ -24,7 +24,7 @@ defmodule MultiplayerGameWeb.GameLive do
         <canvas class="game border-2 unblur" width="10" height="10" id="screen" phx-update="ignore"></canvas>
       </section>
       <div class="justify-center items-center text-center">
-        <h1>Scores </h1>
+        <h1 class="text-lg">Scores</h1>
         <%= for {_id, player} <- @state.players do %>
           <p><%= player.name %> scored <%= if @state != nil, do: Map.get(@state.players[player.id], :points) %></p>
         <% end %>
