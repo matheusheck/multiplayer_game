@@ -6,17 +6,16 @@
 name: Elixir CI
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: '*'
+  push:
+    branches: '*'
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     name: Build and test
     runs-on: ubuntu-latest
 
