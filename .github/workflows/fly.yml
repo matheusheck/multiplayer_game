@@ -1,4 +1,5 @@
 name: Fly Deploy
+needs: Elixir CI
 on:
   push:
     branches:
