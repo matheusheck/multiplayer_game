@@ -30,14 +30,10 @@ jobs:
         run: mix test
 
   deploy:
-    name: Deploy app
-    needs: elixir-ci
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-        with:
-          version: 0.0.462
-      - run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+                  
+- name: GitHub Action for flyctl
+
+
+              
+  uses: superfly/flyctl-actions@1.4
+
