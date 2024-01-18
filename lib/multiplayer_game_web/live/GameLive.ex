@@ -17,7 +17,7 @@ defmodule MultiplayerGameWeb.GameLive do
   def render(assigns) do
     ~H"""
       <div class="justify-center items-center text-center">
-        <h1>Hi, <%= @unique_name %></h1>
+        <h1 class="text-lg" >Hi, <%= @unique_name %></h1>
         <h1>You scored <%= if @state.players[@player.id] != nil, do: Map.get(@state.players[@player.id], :points) %></h1>
       </div>
       <section phx-hook="Listener" id="game" class="flex flex-col w-screen justify-center items-center text-center">
