@@ -94,7 +94,6 @@ defmodule MultiplayerGameWeb.GameLive do
   end
 
   def terminate(_reason, %{assigns: %{player: %{id: player_id}}}) do
-    if MultiplayerGame.Game.count_players() == 1, do: MultiplayerGame.Fruit.stop_adding_fruit()
     Game.remove_player(player_id)
   end
 

@@ -49,6 +49,7 @@ defmodule MultiplayerGame.Game.State do
         Map.replace(state, key_to_be_updated, new_value)
       end)
 
+    notify_new_state()
     {:ok, get()}
   end
 
