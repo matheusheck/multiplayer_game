@@ -12,10 +12,22 @@ defmodule MultiplayerGame.Player do
   @doc """
   Iniciate the state with Game struct
   """
+  def create(%{
+        id: id,
+        name: name
+      }) do
+    %__MODULE__{
+      x: Enum.random(0..7),
+      y: Enum.random(0..7),
+      id: id,
+      name: name
+    }
+  end
+
   def create() do
     %__MODULE__{
-      x: Enum.random(0..10),
-      y: Enum.random(0..10),
+      x: Enum.random(0..7),
+      y: Enum.random(0..7),
       id: UUID.uuid4(),
       name: MultiplayerGame.Names.generate()
     }

@@ -16,8 +16,8 @@ defmodule MultiplayerGame.Fruit do
   """
   def create() do
     %__MODULE__{
-      x: Enum.random(0..10),
-      y: Enum.random(0..10),
+      x: Enum.random(0..7),
+      y: Enum.random(0..7),
       id: UUID.uuid4()
     }
   end
@@ -56,6 +56,7 @@ defmodule MultiplayerGame.Fruit do
   end
 
   def stop_adding_fruit do
+    State.update_state(:fruits, %{})
     State.update_state(:is_adding_fruit?, false)
     State.notify_new_state()
   end
