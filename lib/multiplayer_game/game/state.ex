@@ -3,9 +3,6 @@ defmodule MultiplayerGame.Game.State do
 
   defstruct players: %{},
             fruits: %{},
-            screen: %{width: 10, height: 10},
-            current_player: nil,
-            pid: nil,
             is_adding_fruit?: false
 
   use Agent

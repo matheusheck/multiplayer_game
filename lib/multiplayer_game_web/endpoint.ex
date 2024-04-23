@@ -1,13 +1,16 @@
 defmodule MultiplayerGameWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :multiplayer_game
 
+  @one_day_in_seconds 24 * 60 * 60
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
     key: "_multiplayer_game_key",
-    signing_salt: "w4dxsV5v"
+    signing_salt: "w4dxsV5v",
+    max_age: @one_day_in_seconds
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]

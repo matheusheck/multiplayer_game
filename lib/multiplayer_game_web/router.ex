@@ -17,7 +17,6 @@ defmodule MultiplayerGameWeb.Router do
   scope "/", MultiplayerGameWeb do
     pipe_through :browser
 
-    # get "/", PageController, :index
     live "/admin", AdminLive
 
     pipe_through MultiplayerGameWeb.Plug.AssignSession

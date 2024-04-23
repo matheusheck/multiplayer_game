@@ -1,26 +1,34 @@
 defmodule MultiplayerGame.Game do
   alias MultiplayerGame.Game.State
+  alias MultiplayerGame.Player
 
   @doc """
   Iniciate the state with Game struct
   """
 
-  def maybe_add_player(%{id: id} = player) do
+  def maybe_add_player(id, name) do
+    player =
+      Player.create(%{
+        id: id,
+        name: name
+      })
+
     State.get()
     |> Map.has_key?(id)
     |> add_player(player)
   end
 
   def remove_player(player_id) do
-    case count_players() > 1 do
-      true ->
-        state = State.get()
-        new_players = Map.delete(state.players, player_id)
-        State.update_state(:players, new_players)
-        State.notify_new_state()
+    case(count_players()) do
+      2 ->
+        MultiplayerGame.Fruit.stop_adding_fruit()
+        remove_player_from_state(player_id)
 
-      _ ->
-        MultiplayerGame.Game.State.stop_game()
+      1 ->
+        :ok
+
+      _more_players ->
+        remove_player_from_state(player_id)
     end
   end
 
@@ -33,7 +41,11 @@ defmodule MultiplayerGame.Game do
     end
   end
 
-  def move_player(%{"keyPressed" => keyPressed, "playerId" => player_id}) do
+  def move_player(%{"key" => "meta"}, _player_id) do
+    State.get()
+  end
+
+  def move_player(%{"key" => keyPressed}, player_id) do
     state = State.get()
 
     state
@@ -41,7 +53,9 @@ defmodule MultiplayerGame.Game do
     |> maybe_move_player(state, keyPressed)
   end
 
-  def move_player(_), do: State.get()
+  def move_player(_event, _player_id) do
+    State.get()
+  end
 
   defp check_fruit_collision(fruits, %{x: x, y: y} = _player) do
     fruits
@@ -51,6 +65,19 @@ defmodule MultiplayerGame.Game do
 
   def get_same_position_fruits(fruits, x, y) do
     for({id, fruit} <- fruits, fruit.x == x && fruit.y == y, do: id)
+  end
+
+  def get_player(player_id) do
+    State.get()
+    |> Map.get(:players)
+    |> Map.get(player_id)
+  end
+
+  defp remove_player_from_state(player_id) do
+    state = State.get()
+    new_players = Map.delete(state.players, player_id)
+    State.update_state(:players, new_players)
+    State.notify_new_state()
   end
 
   defp get_player(state, player_id) do
@@ -64,7 +91,7 @@ defmodule MultiplayerGame.Game do
 
   defp maybe_move_player(player, state, keyPressed)
 
-  defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 9,
+  defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 7,
     do: update_player_movement_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0,
@@ -73,7 +100,7 @@ defmodule MultiplayerGame.Game do
   defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0,
     do: update_player_movement_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
 
-  defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 9,
+  defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 7,
     do: update_player_movement_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
 
   defp maybe_move_player(_player, state, _key_pressed), do: state
