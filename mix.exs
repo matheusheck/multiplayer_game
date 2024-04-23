@@ -50,7 +50,8 @@ defmodule MultiplayerGame.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ecsx, "~> 0.5.1"},
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:dotenv, "~> 3.1"}
     ]
   end
 

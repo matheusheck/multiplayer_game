@@ -7,6 +7,8 @@ defmodule MultiplayerGame.Application do
 
   @impl true
   def start(_type, _args) do
+    Dotenv.load()
+
     children = [
       # Start the Telemetry supervisor
       MultiplayerGameWeb.Telemetry,
@@ -16,7 +18,8 @@ defmodule MultiplayerGame.Application do
       MultiplayerGameWeb.Endpoint,
       # Start a worker by calling: MultiplayerGame.Worker.start_link(arg)
       # {MultiplayerGame.Worker, arg}
-      MultiplayerGameWeb.Presence
+      MultiplayerGameWeb.Presence,
+      MultiplayerGame.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

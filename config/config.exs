@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :multiplayer_game,
+  ecto_repos: [MultiplayerGame.Repo]
+
 # Configures the endpoint
 config :multiplayer_game, MultiplayerGameWeb.Endpoint,
   url: [host: "localhost"],
