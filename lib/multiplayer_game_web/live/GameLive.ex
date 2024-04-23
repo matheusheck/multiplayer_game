@@ -8,7 +8,7 @@ defmodule MultiplayerGameWeb.GameLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col items-center justify-center h-screen w-screen p-8 bg-slate-600">
+    <div class="flex flex-col w-screen items-center justify-center p-4 lg:p-8 bg-slate-600">
       <div class="flex flex-col w-100 items-center p-4 justify-center rounded-lg bg-slate-400">
         <h1 class=" w-full text-center text-xl font-extrabold">
           Welcome, <%= @unique_name %> 🐰!
@@ -44,7 +44,7 @@ defmodule MultiplayerGameWeb.GameLive do
   def render_game_canvas(assigns) do
     ~H"""
     <div phx-window-keydown="key_down" class="flex flex-col items-center justify-center rounded-md">
-       <div class="grid grid-cols-8 border-2 rounded-md  bg-slate-200 p-3 gap-1">
+       <div class="grid grid-cols-8 border-2 rounded-md bg-slate-200 p-3 gap-1">
          <%= for y <- 0..7, x <- 0..7 do %>
            <div class={get_classes({x,y})}>
              <%= render_cell(@canvas, @current_player, {x,y}) %>
@@ -58,7 +58,7 @@ defmodule MultiplayerGameWeb.GameLive do
 
   def render_mobile_gamepad(assigns) do
     ~H"""
-    <div class="flex items-center justify-center h-screen lg:hidden">
+    <div class="flex items-center justify-center p-4 lg:hidden">
        <div class="grid grid-cols-3">
          <%= for y <- 0..2, x <- 0..2 do %>
            <div class="flex items-center justify-center text-4xl w-12 h-12" phx-click={get_click_payload({x,y})}>
