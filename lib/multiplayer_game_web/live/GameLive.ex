@@ -119,7 +119,7 @@ defmodule MultiplayerGameWeb.GameLive do
   end
 
   def handle_event("copy_link", _value, socket) do
-    link_to_copy = "https://xxx.com/your_link_here"
+    link_to_copy = "https://multiplayer-game.fly.dev/"
     {:noreply, push_event(socket, "copy_to_clipboard", %{text: link_to_copy})}
   end
 
