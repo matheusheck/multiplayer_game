@@ -5,11 +5,15 @@
 
 ## What is it?
 
-A multiplayer game using html canvas tag `<canvas>` written in Elixir with Phoenix to connect mutiple players at same game.
+A multiplayer game using LiveView and Tailwind written in Elixir with Phoenix to connect mutiple players at same game.
 
-It is a repo to think of separations of concerns in modern functional programming.
+It is a repository started to think of separations of concerns in modern functional programming.
+It was also a Hook investigation. This version got rid of `<canvas>` tag to use modern Liveview.
 
-To play the game, each client connects to same page to grab the green pixels. Current players see themselves as yellow pixel and watch the opponents as black squares.
+## How to play
+
+This game is a simple game where you are a rat 🐭 running for your food!
+Get it before your opponets, the ants 🐜.
 
 ## How to run it locally
 
