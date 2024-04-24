@@ -10,13 +10,13 @@ Play [mvp version](https://multiplayer-game.fly.dev/) of this game.
 
 A multiplayer game using LiveView and Tailwind written in Elixir with Phoenix to connect mutiple players at same game.
 
-It is a repository started to think of separations of concerns in modern functional programming.
+This repository started to think of separations of concerns in modern functional programming.
 It was also a Hook investigation. This version got rid of `<canvas>` tag to use modern Liveview.
-This is a study repo and long term wip!
+This is a study repo and long term wip! Slowly but always improving.
 
 ## How to play
 
-This game is a simple game where you are a rat 🐭 running for your food!
+The game is a simple game where you are a rat 🐭 running for your food!
 Get it before your opponets, the ants 🐜.
 
 ## How to run it locally
