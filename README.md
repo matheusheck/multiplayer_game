@@ -40,4 +40,4 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 - [Docs](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html)
 - [Tailwind docs (time saver)](https://tailwindcss.com/docs/)
 - [Blog post about game architecture](https://dockyard.com/blog/2023/07/06/ecsx-a-new-approach-to-game-development-in-elixir)
-- [ECXs Lib guide](https://hexdocs.pm/ecsx/web_frontend_liveview.html#client-input-via-liveview))
+- [ECXs Lib guide](https://hexdocs.pm/ecsx/web_frontend_liveview.html#client-input-via-liveview)
