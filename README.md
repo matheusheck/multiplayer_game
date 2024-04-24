@@ -1,7 +1,8 @@
 ![example workflow](https://github.com/matheusheck/multiplayer_game/actions/workflows/elixir.yml/badge.svg)
 # My multiplayer Game
 
-![screenshot of this game](https://user-images.githubusercontent.com/39709032/203156946-1bbea095-8d86-4b17-908e-5d769b110217.png)
+![screenshot of this game]([https://user-images.githubusercontent.com/39709032/203156946-1bbea095-8d86-4b17-908e-5d769b110217.png](https://github.com/matheusheck/multiplayer_game/assets/39709032/80540279-b737-48e6-98fe-41f4b08aaec1))
+
 
 ## What is it?
 
