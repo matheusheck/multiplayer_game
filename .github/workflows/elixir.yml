@@ -8,10 +8,8 @@ name: Elixir Tests
 on:
   pull_request:
       - '*'  # Run on all branches
-      - '!master'  # Exclude the master branch
   push:
       - '*'  # Run on all branches
-      - '!master'  # Exclude the master branch
 
 permissions:
   contents: read
