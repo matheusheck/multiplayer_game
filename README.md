@@ -36,7 +36,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 ## Learn more
 
-- [ASDF <> Elixir]([https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html](https://thinkingelixir.com/install-elixir-using-asdf/))
+- [ASDF <> Elixir](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html](https://thinkingelixir.com/install-elixir-using-asdf/)
 - [Docs](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html)
 - [Tailwind docs (time saver)](https://tailwindcss.com/docs/)
 - [Blog post about game architecture](https://dockyard.com/blog/2023/07/06/ecsx-a-new-approach-to-game-development-in-elixir)
