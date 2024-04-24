@@ -1,4 +1,6 @@
 ![example workflow](https://github.com/matheusheck/multiplayer_game/actions/workflows/elixir.yml/badge.svg)
+
+Play the game at [mvp version](https://multiplayer-game.fly.dev/)
 # My multiplayer Game
 
 ![screenshot of this game](https://github.com/matheusheck/multiplayer_game/assets/39709032/80540279-b737-48e6-98fe-41f4b08aaec1)
@@ -32,9 +34,8 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 ## Learn more
 
-- Official website: https://www.phoenixframework.org/
-- ASDF <> Elixir: https://thinkingelixir.com/install-elixir-using-asdf/
-- Guides: https://hexdocs.pm/phoenix/overview.html
-- Docs: https://hexdocs.pm/phoenix
-- Forum: https://elixirforum.com/c/phoenix-forum
-- Source: https://github.com/phoenixframework/phoenix
+- [ASDF <> Elixir]([https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html](https://thinkingelixir.com/install-elixir-using-asdf/))
+- [Docs](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html)
+- [Tailwind docs (time saver)](https://tailwindcss.com/docs/)
+- [Blog post about game architecture](https://dockyard.com/blog/2023/07/06/ecsx-a-new-approach-to-game-development-in-elixir)
+- [ECXs Lib guide](https://hexdocs.pm/ecsx/web_frontend_liveview.html#client-input-via-liveview))
