@@ -18,6 +18,7 @@ import Config
 # script that automatically sets the env var above.
 
 config :multiplayer_game, MultiplayerGame.Repo,
+  socket_options: [:inet6],
   database: System.get_env("DATABASE"),
   username: System.get_env("USERNAME_DB"),
   password: System.get_env("PASSWORD"),

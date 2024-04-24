@@ -8,7 +8,7 @@ defmodule MultiplayerGameWeb.GameLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col w-screen items-center justify-center p-4 lg:p-8 bg-slate-600">
+    <div class="flex flex-col items-center h-screen justify-center p-4 lg:p-6 bg-slate-600">
       <div class="flex flex-col w-100 items-center p-4 justify-center rounded-lg bg-slate-400">
         <h1 class=" w-full text-center text-xl font-extrabold">
           Welcome, <%= @unique_name %> 🐰!
@@ -23,7 +23,7 @@ defmodule MultiplayerGameWeb.GameLive do
         <h1 class="flex f-row w-full justify-center text-xl font-extrabold py-4">
           Score
         </h1>
-        <div class="flex flex-col w-full rounded-md bg-slate-200 p-4 rounded gap-1 overflow-hidden">
+        <div class="flex flex-col w-full max-h-20 rounded-md bg-slate-200 p-4 rounded gap-1 overflow-auto">
           <%= for {_id, player} <- @state.players do %>
           <div class="flex flex-row w-full place-content-between p-2 rounded bg-slate-100">
             <h3> <%= player.name %></h3>
