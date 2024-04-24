@@ -12,6 +12,7 @@ A multiplayer game using LiveView and Tailwind written in Elixir with Phoenix to
 
 It is a repository started to think of separations of concerns in modern functional programming.
 It was also a Hook investigation. This version got rid of `<canvas>` tag to use modern Liveview.
+This is a study repo and long term wip!
 
 ## How to play
 
