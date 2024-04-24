@@ -5,6 +5,7 @@ defmodule MultiplayerGameWeb.GameLive do
   alias MultiplayerGame.Game.State
 
   @base_classes "flex items-center justify-center text-4xl w-10 h-10 rounded"
+  @live_game_link "https://multiplayer-game.fly.dev/"
 
   def render(assigns) do
     ~H"""
@@ -90,7 +91,7 @@ defmodule MultiplayerGameWeb.GameLive do
 
       IO.inspect(state, label: "state")
 
-      if MultiplayerGame.Game.count_players() == 2, do: MultiplayerGame.Fruit.start_adding_fruit()
+      if MultiplayerGame.Game.count_players() > 1, do: MultiplayerGame.Fruit.start_adding_fruit()
       State.subscribe()
       State.notify_new_state()
       MultiplayerGame.Monitor.monitor(self(), __MODULE__, %{current_player: id})
@@ -119,12 +120,11 @@ defmodule MultiplayerGameWeb.GameLive do
   end
 
   def handle_event("copy_link", _value, socket) do
-    link_to_copy = "https://multiplayer-game.fly.dev/"
+    link_to_copy = @live_game_link
     {:noreply, push_event(socket, "copy_to_clipboard", %{text: link_to_copy})}
   end
 
   def handle_event(click_arrow, _payload, %{assigns: %{current_player: current_player}} = socket) do
-    IO.inspect("CLICOU!!")
     MultiplayerGame.Game.move_player(%{"key" => click_arrow}, current_player)
     {:noreply, socket}
   end
