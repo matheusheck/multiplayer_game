@@ -2,8 +2,6 @@
 # My multiplayer Game
 
 ![screenshot of this game](https://github.com/matheusheck/multiplayer_game/assets/39709032/80540279-b737-48e6-98fe-41f4b08aaec1)
-![Uploading Captura de Tela 2024-04-24 às 03.58.31.png…]()
-
 
 ## What is it?
 
