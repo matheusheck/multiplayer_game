@@ -4,24 +4,24 @@ defmodule MultiplayerGameWeb.GameLive do
   alias MultiplayerGame.Game
   alias MultiplayerGame.Game.State
 
-  @base_classes "flex items-center justify-center text-4xl w-10 h-10 rounded"
+  @base_classes "flex items-center justify-center text-4xl w-7 h-7 lg:w-10 lgh-10  rounded"
   @live_game_link "https://multiplayer-game.fly.dev/"
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col items-center h-screen justify-center p-4 lg:p-6 bg-slate-600">
-      <div class="flex flex-col w-100 items-center p-4 justify-center rounded-lg bg-slate-400">
-        <h1 class=" w-full text-center text-xl font-extrabold">
+    <div class="flex flex-col items-center h-full lg:h-screen justify-center mt-2 p-4 lg:p-6 bg-slate-600">
+      <div class="flex flex-col w-100 items-center p-2 lg:p-4 justify-center rounded-lg bg-slate-400">
+        <h1 class="pb-2 lg:pb-0 w-full text-center text-xl font-extrabold">
           Welcome, <%= @unique_name %> 🐰!
         </h1>
-        <p class="my-4 w-full text-center text-lg">
+        <p class="hidden lg:block my-4 w-full text-center text-lg">
           Share this link to play with a friend
         </p>
-        <button id="copy-button" phx-click="copy_link" phx-hook="CopyToClipboard" class="bg-slate-800 hover:bg-blue-700 mb-4 text-white py-2 px-4 rounded">
+        <button id="copy-button" phx-click="copy_link" phx-hook="CopyToClipboard" class="hidden lg:flex bg-slate-800 hover:bg-blue-700 mb-4 text-white py-2 px-4 rounded">
           Copy Link
         </button>
         <%= render_game_canvas(%{canvas: @canvas, current_player: @current_player, state: @state}) %>
-        <h1 class="flex f-row w-full justify-center text-xl font-extrabold py-4">
+        <h1 class="flex f-row w-full justify-center text-xl font-extrabold py-2 lg:py-4">
           Score
         </h1>
         <div class="flex flex-col w-full max-h-20 rounded-md bg-slate-200 p-4 rounded gap-1 overflow-auto">
@@ -62,7 +62,7 @@ defmodule MultiplayerGameWeb.GameLive do
     <div class="flex items-center justify-center p-4 lg:hidden">
        <div class="grid grid-cols-3">
          <%= for y <- 0..2, x <- 0..2 do %>
-           <div class="flex items-center justify-center text-4xl w-12 h-12" phx-click={get_click_payload({x,y})}>
+           <div class="flex items-center justify-center text-4xl w-9 h-9" phx-click={get_click_payload({x,y})}>
               <%= render_gamepad_arrow({x,y}) %>
            </div>
          <% end %>
