@@ -1,6 +1,7 @@
 ![example workflow](https://github.com/matheusheck/multiplayer_game/actions/workflows/elixir.yml/badge.svg)
 
-Play the game at [mvp version](https://multiplayer-game.fly.dev/)
+Play [mvp version](https://multiplayer-game.fly.dev/) of this game.
+
 # My multiplayer Game
 
 ![screenshot of this game](https://github.com/matheusheck/multiplayer_game/assets/39709032/80540279-b737-48e6-98fe-41f4b08aaec1)
