@@ -1,6 +1,6 @@
 defmodule MultiplayerGame.Game do
   alias MultiplayerGame.Game.State
-  alias MultiplayerGame.Player
+  alias MultiplayerGame.Game.Player
 
   @doc """
   Iniciate the state with Game struct
@@ -19,17 +19,9 @@ defmodule MultiplayerGame.Game do
   end
 
   def remove_player(player_id) do
-    case(count_players()) do
-      2 ->
-        MultiplayerGame.Fruit.stop_adding_fruit()
-        remove_player_from_state(player_id)
-
-      1 ->
-        :ok
-
-      _more_players ->
-        remove_player_from_state(player_id)
-    end
+    players_count = count_players()
+    maybe_remove_player_from_state(players_count, player_id)
+    maybe_stop_adding_fruit(players_count)
   end
 
   def count_players() do
@@ -92,16 +84,16 @@ defmodule MultiplayerGame.Game do
   defp maybe_move_player(player, state, keyPressed)
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowDown") when y < 7,
-    do: update_player_movement_on_state(%MultiplayerGame.Player{player | y: y + 1}, state)
+    do: update_player_movement_on_state(%Player{player | y: y + 1}, state)
 
   defp maybe_move_player(%{y: y} = player, state, "ArrowUp") when y > 0,
-    do: update_player_movement_on_state(%MultiplayerGame.Player{player | y: y - 1}, state)
+    do: update_player_movement_on_state(%Player{player | y: y - 1}, state)
 
   defp maybe_move_player(%{x: x} = player, state, "ArrowLeft") when x > 0,
-    do: update_player_movement_on_state(%MultiplayerGame.Player{player | x: x - 1}, state)
+    do: update_player_movement_on_state(%Player{player | x: x - 1}, state)
 
   defp maybe_move_player(%{x: x} = player, state, "ArrowRight") when x < 7,
-    do: update_player_movement_on_state(%MultiplayerGame.Player{player | x: x + 1}, state)
+    do: update_player_movement_on_state(%Player{player | x: x + 1}, state)
 
   defp maybe_move_player(_player, state, _key_pressed), do: state
 
@@ -122,7 +114,7 @@ defmodule MultiplayerGame.Game do
   defp update_player_score(:no_collision, player), do: player
 
   defp update_player_score(:ok, %{points: points} = player),
-    do: %MultiplayerGame.Player{player | points: points + 1}
+    do: %Player{player | points: points + 1}
 
   defp add_player(true, _), do: State.get()
 
@@ -130,4 +122,17 @@ defmodule MultiplayerGame.Game do
     state = State.get()
     State.update_state(:players, Map.put(state.players, id, player))
   end
+
+  # todo
+  # defp update_state() do
+  #   State.update_state(:players, Map.put(state.players, id, player))
+  # end
+
+  defp maybe_stop_adding_fruit(2), do: MultiplayerGame.Fruit.stop_adding_fruit()
+  defp maybe_stop_adding_fruit(_players_count), do: :ok
+
+  defp maybe_remove_player_from_state(players, player_id) when players > 1,
+    do: remove_player_from_state(player_id)
+
+  defp maybe_remove_player_from_state(_, _), do: :ok
 end

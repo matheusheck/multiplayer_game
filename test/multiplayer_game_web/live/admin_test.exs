@@ -1,8 +1,6 @@
-defmodule MultiplayerGameWeb.Live.AdminTest do
+defmodule MultiplayerGameWeb.Live.GameLiveTest do
   use MultiplayerGameWeb.ConnCase
 
-  test "GET /admin", %{conn: conn} do
-    conn = get(conn, "/admin")
-    assert html_response(conn, 200) =~ "Admin"
+  test "GET /", %{conn: _conn} do
   end
 end

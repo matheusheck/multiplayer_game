@@ -29,10 +29,8 @@ defmodule MultiplayerGame.Game.State do
   end
 
   def maybe_start_game do
-    case up?() do
-      true -> {:ok, :state_was_up}
-      false -> start_game()
-    end
+    up?()
+    |> maybe_start_game()
   end
 
   def reset_state() do
@@ -62,4 +60,7 @@ defmodule MultiplayerGame.Game.State do
       notify({:new_state, get()})
     end
   end
+
+  defp maybe_start_game(true), do: {:ok, :state_was_up}
+  defp maybe_start_game(false), do: start_game()
 end

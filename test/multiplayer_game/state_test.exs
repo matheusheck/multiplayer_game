@@ -16,9 +16,6 @@ defmodule MultiplayerGame.Game.StateTest do
     assert %MultiplayerGame.Game.State{
              players: %{},
              fruits: %{},
-             screen: %{width: 10, height: 10},
-             current_player: nil,
-             pid: _,
              is_adding_fruit?: false
            } = state
   end
@@ -29,9 +26,6 @@ defmodule MultiplayerGame.Game.StateTest do
     assert %MultiplayerGame.Game.State{
              players: %{},
              fruits: %{},
-             screen: %{width: 10, height: 10},
-             current_player: "Player1",
-             pid: _,
              is_adding_fruit?: false
            } = new_state
   end

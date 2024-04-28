@@ -12,6 +12,13 @@ config :multiplayer_game, MultiplayerGameWeb.Endpoint,
     signing_salt: "w4dxsV5v"
   ]
 
+config :multiplayer_game, MultiplayerGame.Repo,
+  database: "multiplayer_game_test",
+  username: "postgres",
+  password: "pass123",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

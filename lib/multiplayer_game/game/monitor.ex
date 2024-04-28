@@ -6,10 +6,9 @@ defmodule MultiplayerGame.Monitor do
   end
 
   def monitor(pid, view_module, meta) do
-    case GenServer.whereis(__MODULE__) do
-      nil -> start_link([])
-      _ -> :ok
-    end
+    __MODULE__
+    |> GenServer.whereis()
+    |> maybe_start_gen_server()
 
     GenServer.call(__MODULE__, {:monitor, pid, view_module, meta})
   end
@@ -24,20 +23,25 @@ defmodule MultiplayerGame.Monitor do
   end
 
   def handle_info({:DOWN, _ref, :process, pid, reason}, %{views: views} = state) do
-    case Map.pop(views, pid) do
-      {{module, meta}, new_views} ->
-        Task.start(fn ->
-          try do
-            module.unmount(meta, reason)
-          rescue
-            e -> IO.puts("Error in unmount: #{inspect(e)}")
-          end
-        end)
-
-        {:noreply, %{state | views: new_views}}
-
-      _ ->
-        {:noreply, state}
-    end
+    views
+    |> Map.pop(pid)
+    |> maybe_start_task_to_unmount(reason, state)
   end
+
+  defp maybe_start_gen_server(nil), do: start_link([])
+  defp maybe_start_gen_server(_process_exist), do: :ok
+
+  defp maybe_start_task_to_unmount({{module, meta}, new_views}, reason, state) do
+    Task.start(fn ->
+      try do
+        module.unmount(meta, reason)
+      rescue
+        e -> IO.puts("Error in unmount: #{inspect(e)}")
+      end
+    end)
+
+    {:noreply, %{state | views: new_views}}
+  end
+
+  defp maybe_start_task_to_unmount(_no_new_view, _reason, state), do: {:noreply, state}
 end

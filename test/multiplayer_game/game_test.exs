@@ -11,10 +11,12 @@ defmodule MultiplayerGame.GameTest do
   end
 
   test "maybe_add_player/2 adds a new player to the state" do
-    player = %{id: "player1", name: "Alice"}
-    {:ok, new_state} = Game.maybe_add_player(player)
+    player = %MultiplayerGame.Game.Player{id: "player1", name: "Alice"}
+    {:ok, new_state} = Game.maybe_add_player(player.id, player.name)
 
     assert Map.has_key?(new_state.players, "player1")
-    assert new_state.players["player1"] == player
+    assert %{id: id, name: name} = new_state.players[player.id]
+    assert name == player.name
+    assert id == player.id
   end
 end

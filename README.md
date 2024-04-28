@@ -23,6 +23,16 @@ Get it before your opponets, the ants 🐜.
 
 This app uses `.tools-version` and recommend using ASDF to install. Check guide bellow.
 
+Have Postgres running locally (you can create one using using Docker: `docker run -d --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=pass123 postgres`).
+
+Create a `.env` file with the following content:
+```
+export HOSTNAME="localhost"
+export DATABASE="multiplayer_game_repo"
+export USERNAME_DB="postgres"
+export PASSWORD="pass123"
+```
+
 To start your Phoenix server:
 
 - Install dependencies with `mix deps.get`
