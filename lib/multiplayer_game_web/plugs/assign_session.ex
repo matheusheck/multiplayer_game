@@ -1,20 +1,22 @@
 defmodule MultiplayerGameWeb.Plug.AssignSession do
+  alias MultiplayerGame.Game
+  alias MultiplayerGame.Players
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    with {:ok, _} <- MultiplayerGame.Game.State.maybe_start_game() do
-      case Plug.Conn.get_session(conn, :id) do
-        nil ->
-          put_session(conn)
-
-        player_id ->
-          conn
-      end
+    with {:ok, _} <- Game.State.maybe_start_game() do
+      conn
+      |> Plug.Conn.get_session(:id)
+      |> maybe_put_session(conn)
     end
   end
 
-  defp put_session(conn) do
-    %{id: id, name: name} = player = MultiplayerGame.Player.create()
+  defp maybe_put_session(nil, conn) do
+    {:ok, %{name: name, id: id}} =
+      Players.create_player(%{name: MultiplayerGame.Names.generate()})
+
+    Game.Player.create(%{name: name, id: id})
 
     conn =
       conn
@@ -23,4 +25,6 @@ defmodule MultiplayerGameWeb.Plug.AssignSession do
 
     conn
   end
+
+  defp maybe_put_session(_, conn), do: conn
 end

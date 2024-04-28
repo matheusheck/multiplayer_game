@@ -1,5 +1,4 @@
 defmodule MultiplayerGameWeb.Plug.AssignSessionTest do
-  alias MultiplayerGame.Player
   alias Plug.Conn
 
   use MultiplayerGameWeb.ConnCase
@@ -23,9 +22,8 @@ defmodule MultiplayerGameWeb.Plug.AssignSessionTest do
 
     conn = MultiplayerGameWeb.Plug.AssignSession.call(conn, [])
 
-    %{"unique_name" => unique_name, "player" => player} = get_session(conn)
+    %{"unique_name" => unique_name, "id" => _id} = get_session(conn)
 
     assert unique_name != nil
-    assert %Player{} = player
   end
 end

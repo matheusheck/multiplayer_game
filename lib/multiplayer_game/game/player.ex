@@ -1,4 +1,4 @@
-defmodule MultiplayerGame.Player do
+defmodule MultiplayerGame.Game.Player do
   @derive Jason.Encoder
   defstruct x: nil, y: nil, id: nil, name: nil, points: 0
 

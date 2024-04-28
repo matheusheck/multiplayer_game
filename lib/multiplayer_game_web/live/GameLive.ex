@@ -89,8 +89,7 @@ defmodule MultiplayerGameWeb.GameLive do
         |> assign(:canvas, map_state_to_canvas(state))
         |> assign(:state, state)
 
-      IO.inspect(state, label: "state")
-
+      # todo If necessary?
       if MultiplayerGame.Game.count_players() > 1, do: MultiplayerGame.Fruit.start_adding_fruit()
       State.subscribe()
       State.notify_new_state()
@@ -100,6 +99,7 @@ defmodule MultiplayerGameWeb.GameLive do
   end
 
   def unmount(%{current_player: id}, _reason) do
+    # todo If necessary?
     if MultiplayerGame.Game.count_players() == 1, do: MultiplayerGame.Fruit.stop_adding_fruit()
     Game.remove_player(id)
     :ok
@@ -159,15 +159,12 @@ defmodule MultiplayerGameWeb.GameLive do
 
   defp render_cell(nil, _current_player_id), do: ""
 
-  defp render_cell(%{type: type, id: id}, current_player_id) do
-    case type do
-      :player -> get_player_icon(id, current_player_id)
-      :fruit -> "🍉"
-    end
-  end
+  defp render_cell(%{type: :player, id: id}, current_player_id),
+    do: get_player_icon(id, current_player_id)
+
+  defp render_cell(%{type: :fruit, id: _id}, _current_player_id), do: "🍉"
 
   defp render_gamepad_arrow(nil), do: ""
-
   defp render_gamepad_arrow({0, 1}), do: "⬅️"
   defp render_gamepad_arrow({1, 0}), do: "⬆️"
   defp render_gamepad_arrow({1, 2}), do: "⬇️"

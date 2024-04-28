@@ -17,22 +17,23 @@ import Config
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
 
-config :multiplayer_game, MultiplayerGame.Repo,
-  socket_options: [:inet6],
-  database: System.get_env("DATABASE"),
-  username: System.get_env("USERNAME_DB"),
-  password: System.get_env("PASSWORD"),
-  hostname: System.get_env("HOSTNAME")
+if config_env() != :test do
+  config :multiplayer_game, MultiplayerGame.Repo,
+    database: System.get_env("DATABASE"),
+    username: System.get_env("USERNAME_DB"),
+    password: System.get_env("PASSWORD"),
+    hostname: System.get_env("HOSTNAME")
 
-config :multiplayer_game,
-  ecto_repos: [MultiplayerGame.Repo],
-  database: System.get_env("DATABASE"),
-  username: System.get_env("USERNAME_DB"),
-  password: System.get_env("PASSWORD"),
-  hostname: System.get_env("HOSTNAME")
+  config :multiplayer_game,
+    ecto_repos: [MultiplayerGame.Repo],
+    database: System.get_env("DATABASE"),
+    username: System.get_env("USERNAME_DB"),
+    password: System.get_env("PASSWORD"),
+    hostname: System.get_env("HOSTNAME")
+end
 
 if System.get_env("PHX_SERVER") do
-  config :multiplayer_game, MultiplayerGameWeb.Endpoint, server: true
+  config :multiplayer_game, MulztiplayerGameWeb.Endpoint, server: true
 end
 
 if config_env() == :prod do

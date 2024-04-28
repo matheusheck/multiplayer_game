@@ -1,10 +1,17 @@
-# defmodule MultiplayerGame.Player do
-#   use Ecto.Schema
+defmodule MultiplayerGame.Players.Player do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-#   schema "players" do
-#     field :id, :binary_id
-#     field :name, :string
+  @primary_key {:id, :binary_id, autogenerate: true}
+  schema "players" do
+    field(:name, :string)
 
-#     timestamps()
-#   end
-# end
+    timestamps()
+  end
+
+  def changeset(player, attrs) do
+    player
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
+  end
+end
